@@ -1,4 +1,4 @@
-var fileInclude = require('gulp-file-include');
+var fileInclude  = require('gulp-file-include');
 
 var destMod = {
     output: './dist/dest',
@@ -56,7 +56,7 @@ module.exports = {
 
     entries: ['./src/html/**', './src/*.html'],
 
-    ignore: ['./src/lib'],
+    ignore: ['./src/lib', './src/css/lib'],
 
     imgFolder: './src/images',
 
@@ -110,15 +110,7 @@ module.exports = {
                 cookie: ""
             }
         },
-        ajaxOnly: false,
-        toolsConf: {
-            weinre: {
-                open: false, //和移动调试工具条中的vconsole冲突, 当为true时vconsole自动关闭
-                port: 9001
-            },
-
-            showTools: true //移动端调试工具条，PC端开发可关闭
-        }
+        ajaxOnly: false
     },
 
     serverConfig: {

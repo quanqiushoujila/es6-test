@@ -1,17 +1,12 @@
 /* eslint-disable */
 var webpack = require('webpack');
 var HappyPack = require('happypack');
-var happyThreadPool = HappyPack.ThreadPool({ size: 4 });
+var happyThreadPool = HappyPack.ThreadPool({ size: 8 });
 
 var commonConf = {
     module: {
         //各种加载器，即让各种文件格式可用require引用
         loaders: [
-            {
-                test: /\.tag$/,
-                exclude: /node_modules/,
-                loader: ['babel-loader', 'riotjs-loader']
-            },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
@@ -52,22 +47,30 @@ var commonConf = {
         //     core: srcDir + "/js/core",
         //     ui: srcDir + "/js/ui"
         // }
-    }
+    },
 };
 
 var webpackConf = {
     dev: {
+        output: {
+            library: 'pass',
+            libraryTarget: 'umd'
+        },
         devtool: "inline-source-map",  //生成sourcemap,便于开发调试
-        //devtool: "cheap-eval-source-map",  //快速打包
+        //devtool: "eval",  //快速打包
         cache: true,
         plugins: [
+            new webpack.HotModuleReplacementPlugin(),
+            new webpack.DllReferencePlugin({
+                context: __dirname,
+                manifest: require('./manifest.json'),
+            }),
             new HappyPack({
                 id: 'js',
                 cache: true,
-                verbose: false,
                 threadPool: happyThreadPool,
-                loaders: [ 'babel-loader' ]
-            }),
+                loaders: [ 'babel-loader?presets=latest' ]
+            })
         ],
         module: commonConf.module,
         resolve: commonConf.resolve
@@ -75,27 +78,28 @@ var webpackConf = {
     },
 
     dest: {
+        output: {
+            library: 'pass',
+            libraryTarget: 'umd'
+        },
         devtool: false,
         cache: false,
         plugins: [
-            new webpack.optimize.ModuleConcatenationPlugin(),
+            new webpack.DllReferencePlugin({
+                context: __dirname,
+                manifest: require('./manifest.json'),
+            }),
+            new HappyPack({
+                id: 'js',
+                cache: false,
+                threadPool: happyThreadPool,
+                loaders: [ 'babel-loader?presets=latest' ]
+            })
         ],
         module: commonConf.module,
         resolve: commonConf.resolve
     }
 };
-
-try {
-    var dllref = new webpack.DllReferencePlugin({
-        context: __dirname,
-        manifest: require('./manifest.json'),
-    });
-    webpackConf.dev.plugins.unshift(dllref);
-    webpackConf.dest.plugins.unshift(dllref);
-}
-catch(e) {
-    console.log('没有生成webpack DllReferencePlugin插件所需的 manifest.json');
-}
 
 //一般来说，RD环境和QA环境打包配置和dest是一致的，但是需要不同的环境变量配置一些参数
 webpackConf.rd = Object.assign(webpackConf.dest, {});
