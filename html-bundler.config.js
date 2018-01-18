@@ -1,7 +1,7 @@
 var fileInclude  = require('gulp-file-include');
 
 var destMod = {
-    output: './dist/dest',
+    output: './dist',
     minify: true,
     minifyHTML: true,
     bundle: true,
@@ -28,7 +28,7 @@ var destMod = {
         js: './js/',
         css: './css/',
         imgs: './images/',
-        html: './html/'
+        html: './view/'
     },
 };
 
@@ -54,7 +54,7 @@ qaMod.define = {
 module.exports = {
     src: './src',
 
-    entries: ['./src/html/**', './src/*.html'],
+    entries: ['./src/view/**', './src/*.html'],
 
     ignore: ['./src/lib', './src/css/lib'],
 
@@ -63,7 +63,7 @@ module.exports = {
     moveList: ['./src/lib'], //需要平移的目录和文件
 
     devMod: {
-        entries: ['./src/html/**', './src/*.html'], //每种模式下内部的entries会覆盖外部的
+        entries: ['./src/view/**', './src/*.html'], //每种模式下内部的entries会覆盖外部的
         output: './dev',
         minify: false,
         minifyHTML: false,
@@ -77,7 +77,7 @@ module.exports = {
             css: ['./src/css'],
             js: ['./src/js'],
             imgs: ['./src/images'],
-            html: ['./src/html']
+            html: ['./src/view']
         },
         define: {
             __DEST__: false,

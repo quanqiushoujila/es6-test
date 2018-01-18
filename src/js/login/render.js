@@ -16,7 +16,7 @@ const tpl = (opts = {}) => {
                 ${ autocompleteAdapter }
                 <label class="login-accound-wrapper">
                     <span class="account-label">${ opts.accountLabel }</span>
-                    <input id="login-account" valid="present" name="account" type="text" placeholder="${ opts.accountPlaceHolder }" maxlength="${opts.accountMax}" autocomplete="${ opts.autocompleteValue }">
+                    <input id="login-account" valid="present|number" name="account" type="text" placeholder="${ opts.accountPlaceHolder }" maxlength="${opts.accountMax}" autocomplete="${ opts.autocompleteValue }">
                     <span id="clear-account" class="del"></span>
                 </label>
 

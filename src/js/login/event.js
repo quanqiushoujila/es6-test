@@ -1,6 +1,30 @@
-/*
-* @Author: kai
-* @Date:   2018-01-18 16:46:50
-* @Last Modified by:   kai
-* @Last Modified time: 2018-01-18 16:59:38
-*/
+import util from '../common/utils.js';
+import formCheck from '../common/form-check.js';
+
+const {querySelector: $} = util;
+
+export default (opts) => {
+  const $loginBtn = $('#login-btn');
+  const $remember = $('#login-remember');
+  const $clearAccount = $('#clear-account');
+  const $clearPassword = $('#clear-password');
+  const $account = $('#login-account');
+  const $password = $('#login-password');
+  const $error = $('#login-error');
+
+  const formCheck = new FormCheck({
+    form: document.getElementById('login-form')
+  });
+
+  $loginBtn.onclick = () => {
+    $error.innerHTML = '';
+
+    const checkResults = formCheck.check();
+  }
+
+  $clearPassword.onclick = () => {
+
+  }
+
+  
+}
